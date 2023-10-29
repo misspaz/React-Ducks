@@ -3,9 +3,10 @@ import { useState } from "react";
 export default function Cuadricula() {
   const [columnas, setColumnas] = useState("");
   const [filas, setFilas] = useState("");
+  const [cuadricula, setCuadricula] = useState();
 
   const inputColumnas = (ev) => {
-    const value = ev.target.value;
+    const value = parseInt(ev.target.value);
     setColumnas(value);
   };
 
@@ -14,29 +15,43 @@ export default function Cuadricula() {
     setFilas(value);
   };
 
-const drawBoard = () => {
-for (let i = 0; i < filas; i++) {
-   const duckImg = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_7njkhxadGkXXTUuF-qAYgsRUFELLnF_RXFyQtfu8miaIdsIMYL56tmujbfaqXYNfAV0&usqp=CAU"
-    for (let j = 0; j < columnas; j++) {
-        
-        
+  const crearCuadricula = () => {
+    if (filas > 0 && columnas > 0) {
+      const nuevaCuadricula = [];
+
+      for (let i = 0; i < filas; i++) {
+        const fila = (
+          <tr key={i}>
+            {Array.from({ length: columnas }).map((_, j) => (
+              <td key={j}>
+                <img
+                  src="https://png.pngtree.com/png-vector/20210522/ourmid/pngtree-rubber-duck-bathing-cute-play-png-image_3321934.jpg"
+                  alt="ducks"
+                />
+              </td>
+            ))}
+          </tr>
+        );
+        nuevaCuadricula.push(fila);
+      }
+      return nuevaCuadricula;
     }
-   
-    
-}
-}
-
-
+  };
 
   return (
-    <div>
-      <h3>Introduce las columnas</h3>
-      <input type="text" onChange={inputColumnas} />
+    <>
+      <div>
+        <h3>Introduce las columnas</h3>
+        <input type="text" onChange={inputColumnas} />
 
-      <h3>Introduce las filas</h3>
-      <input type="text" onChange={inputFilas} />
+        <h3>Introduce las filas</h3>
+        <input type="text" onChange={inputFilas} />
 
-      <button onClick={drawBoard}>Crear cuadrícula</button>
-    </div>
+        <button onClick={() => setCuadricula(crearCuadricula())}>
+          Crear cuadrícula
+        </button>
+      </div>
+      <div>{cuadricula}</div>
+    </>
   );
 }
