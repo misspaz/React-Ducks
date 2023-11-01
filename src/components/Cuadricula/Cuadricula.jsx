@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import "../Cuadricula/Cuadricula.css";
-import XImage from '../../assets/X.png';
-import YellowDuck from '../../assets/yellow-duck2.png';
-import GoldenDuck from '../../assets/golden-duck.png';
-
+import XImage from "../../assets/X.png";
+import YellowDuck from "../../assets/yellow-duck2.png";
+import GoldenDuck from "../../assets/golden-duck.png";
 
 export default function Cuadricula() {
   const [columnas, setColumnas] = useState("");
@@ -13,6 +12,7 @@ export default function Cuadricula() {
     fila: -1,
     columna: -1,
   });
+  const [juegoTerminado, setJuegoTerminado] = useState(false);
 
   const inputColumnas = (ev) => {
     const value = parseInt(ev.target.value);
@@ -59,15 +59,9 @@ export default function Cuadricula() {
     nuevaCuadricula[fila][columna] = {
       contenido:
         fila === patitoDorado.fila && columna === patitoDorado.columna ? (
-          <img className="x-image"
-            src={GoldenDuck}
-            alt="golden-duck"
-          />
+          <img className="x-image" src={GoldenDuck} alt="golden-duck" />
         ) : (
-          <img className="x-image"
-            src={YellowDuck}
-            alt="plastic duck"
-          />
+          <img className="x-image" src={YellowDuck} alt="plastic duck" />
         ),
       revelada: true,
     };
@@ -77,49 +71,62 @@ export default function Cuadricula() {
     if (fila === patitoDorado.fila && columna === patitoDorado.columna) {
       setTimeout(() => {
         alert("Winner winner duck dinner!");
-      }, 300);
+        setJuegoTerminado(true);
+      }, 100);
     }
+  };
+
+  const resetGame = () => {
+    setJuegoTerminado(false); 
+    setCuadricula([]); 
+    setColumnas(""); 
+    setFilas(""); 
+    setPatitoDorado({ fila: -1, columna: -1 }); 
   };
 
   return (
     <>
-      <div className="board">
-        <h1 className="page-title">Find the golden duck!</h1>
-        <div className="input-boxes">
-        <div className="cols">
-          <h3>Number of columns</h3>
-          <input type="text" onChange={inputColumnas} />
-        </div>
+      <div className="main-page">
+        <div className="header">
+          <h1 className="page-title">Find the golden duck!</h1>
+          <div className="input-boxes">
+            <div className="cols">
+              <h3>Number of columns</h3>
+              <input type="text" onChange={inputColumnas} />
+            </div>
 
-        <div className="rows">
-          <h3>Number of rows</h3>
-          <input type="text" onChange={inputFilas} />
-        </div>
-        </div>
+            <div className="rows">
+              <h3>Number of rows</h3>
+              <input type="text" onChange={inputFilas} />
+            </div>
+          </div>
 
-        <button onClick={() => crearCuadricula()}>Let's play!</button>
-      </div>
-      <div>
-        <table>
-          <tbody>
-            {cuadricula.map((fila, i) => (
-              <tr key={i}>
-                {fila.map((celda, j) => (
-                  <td className="celda" key={j} onClick={() => revelarCelda(i, j)}>
-                    {celda.revelada ? (
-                      celda.contenido
-                    ) : (
-                      <img className="x-image"
-                        src={XImage}
-                        alt="X"
-                      />
-                    )}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          <button onClick={() => crearCuadricula()}>Let's play!</button>
+        </div>
+        <div>
+          <table>
+            <tbody>
+              {cuadricula.map((fila, i) => (
+                <tr key={i}>
+                  {fila.map((celda, j) => (
+                    <td
+                      className="celda"
+                      key={j}
+                      onClick={() => revelarCelda(i, j)}
+                    >
+                      {celda.revelada ? (
+                        celda.contenido
+                      ) : (
+                        <img className="x-image" src={XImage} alt="X" />
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {juegoTerminado && <button onClick={resetGame}>Restart</button>}
       </div>
     </>
   );

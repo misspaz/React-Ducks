@@ -6,6 +6,7 @@
   list-style: none;
   text-decoration: none;
   border-style: none;
+  background-color: #fde74c;
 }
 
 @font-face {
@@ -21,16 +22,14 @@
   color: #242424;
 }
 
-.board {
-  width: 1000px;
+.header {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-content: center;
   justify-content: center;
   align-items: center;
-  margin-bottom: 50px;
-  margin-top: 50px;
+  margin-bottom: 15px;
 }
 
 h3 {
@@ -38,7 +37,6 @@ h3 {
   color: #242424;
   font-size: 25px;
   text-align: center;
-
 }
 
 input {
@@ -55,27 +53,44 @@ input {
 
 button {
   background-color: #fffc00;
-  border-color: #cfb500 solid 56x;
+  border: #cfb500 solid 56x;
   border-radius: 30px;
   width: 150px;
   font-family: "Sedan";
   color: #242424;
-  height: 30px;
+  height: 40px;
 }
 
-.input-boxes{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
+.input-boxes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
 }
 
-.x-image{
-    width: 150px;
+.x-image {
+  width: 150px;
 }
 
-.celda{
-    padding: 15px;
+.celda {
+  padding: 15px;
+}
+
+.main-page {
+  background-color: #fde74c;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
+
+table {
+  background-color: #fde74c;
+  height: 100%;
 }
