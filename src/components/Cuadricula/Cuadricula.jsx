@@ -1,9 +1,18 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import "../Cuadricula/Cuadricula.css";
+import XImage from '../../assets/X.png';
+import YellowDuck from '../../assets/yellow-duck2.png';
+import GoldenDuck from '../../assets/golden-duck.png';
+
 
 export default function Cuadricula() {
   const [columnas, setColumnas] = useState("");
   const [filas, setFilas] = useState("");
-  const [cuadricula, setCuadricula] = useState();
+  const [cuadricula, setCuadricula] = useState([]);
+  const [patitoDorado, setPatitoDorado] = useState({
+    fila: -1,
+    columna: -1,
+  });
 
   const inputColumnas = (ev) => {
     const value = parseInt(ev.target.value);
@@ -15,43 +24,103 @@ export default function Cuadricula() {
     setFilas(value);
   };
 
+  function numRandom(max) {
+    return Math.floor(Math.random() * max);
+  }
+
   const crearCuadricula = () => {
     if (filas > 0 && columnas > 0) {
       const nuevaCuadricula = [];
 
+      const filaDorada = numRandom(filas);
+      const columnaDorada = numRandom(columnas);
+      setPatitoDorado({ fila: filaDorada, columna: columnaDorada });
+
       for (let i = 0; i < filas; i++) {
-        const fila = (
-          <tr key={i}>
-            {Array.from({ length: columnas }).map((_, j) => (
-              <td key={j}>
-                <img
-                  src="https://png.pngtree.com/png-vector/20210522/ourmid/pngtree-rubber-duck-bathing-cute-play-png-image_3321934.jpg"
-                  alt="ducks"
-                />
-              </td>
-            ))}
-          </tr>
-        );
+        const fila = [];
+        for (let j = 0; j < columnas; j++) {
+          fila.push({
+            contenido: "https://cdn-icons-png.flaticon.com/512/1/1766.png",
+            revelada: false,
+          });
+        }
         nuevaCuadricula.push(fila);
       }
-      return nuevaCuadricula;
+      setCuadricula(nuevaCuadricula);
+    }
+  };
+
+  const revelarCelda = (fila, columna) => {
+    if (cuadricula[fila][columna].revelada) {
+      return;
+    }
+
+    const nuevaCuadricula = [...cuadricula];
+    nuevaCuadricula[fila][columna] = {
+      contenido:
+        fila === patitoDorado.fila && columna === patitoDorado.columna ? (
+          <img className="x-image"
+            src={GoldenDuck}
+            alt="golden-duck"
+          />
+        ) : (
+          <img className="x-image"
+            src={YellowDuck}
+            alt="plastic duck"
+          />
+        ),
+      revelada: true,
+    };
+
+    setCuadricula(nuevaCuadricula);
+
+    if (fila === patitoDorado.fila && columna === patitoDorado.columna) {
+      setTimeout(() => {
+        alert("Winner winner duck dinner!");
+      }, 300);
     }
   };
 
   return (
     <>
-      <div>
-        <h3>Introduce las columnas</h3>
-        <input type="text" onChange={inputColumnas} />
+      <div className="board">
+        <h1 className="page-title">Find the golden duck!</h1>
+        <div className="input-boxes">
+        <div className="cols">
+          <h3>Number of columns</h3>
+          <input type="text" onChange={inputColumnas} />
+        </div>
 
-        <h3>Introduce las filas</h3>
-        <input type="text" onChange={inputFilas} />
+        <div className="rows">
+          <h3>Number of rows</h3>
+          <input type="text" onChange={inputFilas} />
+        </div>
+        </div>
 
-        <button onClick={() => setCuadricula(crearCuadricula())}>
-          Crear cuadrícula
-        </button>
+        <button onClick={() => crearCuadricula()}>Let's play!</button>
       </div>
-      <div>{cuadricula}</div>
+      <div>
+        <table>
+          <tbody>
+            {cuadricula.map((fila, i) => (
+              <tr key={i}>
+                {fila.map((celda, j) => (
+                  <td className="celda" key={j} onClick={() => revelarCelda(i, j)}>
+                    {celda.revelada ? (
+                      celda.contenido
+                    ) : (
+                      <img className="x-image"
+                        src={XImage}
+                        alt="X"
+                      />
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

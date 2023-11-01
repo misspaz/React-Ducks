@@ -3,10 +3,10 @@ import Cuadricula from './components/Cuadricula/Cuadricula';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className='page'>
+      
  <Cuadricula/>
-      </header>
+      
     </div>
   );
 }
